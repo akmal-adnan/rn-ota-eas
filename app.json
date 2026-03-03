@@ -1,4 +1,10 @@
 {
   "name": "OTA_EAS",
-  "displayName": "OTA_EAS"
+  "displayName": "OTA_EAS",
+  "plugins": [
+    "expo-asset"
+  ],
+  "ios": {
+    "bundleIdentifier": "com.neo-gz.ota-eas"
+  }
 }

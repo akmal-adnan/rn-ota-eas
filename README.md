@@ -4,6 +4,17 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
+## ALERT: For Expo its using new expo command
+
+```sh
+# start expo server
+expo start
+# build ios
+npx expo run:ios
+# build android
+npx expo run:android
+```
+
 ## Step 1: Start Metro
 
 First, you will need to run **Metro**, the JavaScript build tool for React Native.
