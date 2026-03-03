@@ -6,5 +6,16 @@
   ],
   "ios": {
     "bundleIdentifier": "com.neo-gz.ota-eas"
-  }
+  },
+  "extra": {
+    "eas": {
+      "projectId": "f3aac333-cc4d-4129-8918-5739eb17d173"
+    }
+  },
+  "owner": "neo_gz",
+  "runtimeVersion": "1.0.0",
+  "updates": {
+    "url": "https://u.expo.dev/f3aac333-cc4d-4129-8918-5739eb17d173"
+  },
+  "android": {}
 }

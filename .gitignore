@@ -33,6 +33,13 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+*.apk
+*.aab
+
+# Ios
+#
+*.app
+*.tar.gz
 
 # node.js
 #
