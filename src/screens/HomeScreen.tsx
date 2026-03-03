@@ -12,15 +12,21 @@ import Header from '../components/Header';
 import StatCard from '../components/StatCard';
 import PolicyCard from '../components/PolicyCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import UpdateBanner from '../components/UpdateBanner';
 import {COLORS, SPACING, FONT_SIZE} from '../constants/colors';
 import {mockPolicies} from '../constants/mockData';
 import {RootStackParamList} from '../types';
+import {useUpdateCheck} from '../hooks/useUpdateCheck';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showUpdateBanner, setShowUpdateBanner] = useState(true);
+
+  const {isUpdateAvailable, isChecking, checkForUpdate, performUpdate} =
+    useUpdateCheck();
 
   useEffect(() => {
     // Simulate loading policies with a 1.5 second delay
@@ -47,59 +53,58 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     navigation.navigate('Details', {policyId});
   };
 
-  if (isLoading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Header title="Dashboard" subtitle="Your policies at a glance" />
-        <LoadingSpinner />
-      </SafeAreaView>
-    );
-  }
-
-  if (error) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Header title="Dashboard" subtitle="Your policies at a glance" />
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.container}>
+      {isUpdateAvailable && showUpdateBanner && (
+        <UpdateBanner
+          isVisible={isUpdateAvailable && showUpdateBanner}
+          isChecking={isChecking}
+          onRecheck={checkForUpdate}
+          onDismiss={() => setShowUpdateBanner(false)}
+          onUpdate={performUpdate}
+        />
+      )}
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}>
-        <Header title="Dashboard" subtitle="Your policies at a glance" />
+        <Header title="Hello World" subtitle="Your policies at a glance" />
 
-        {/* Statistics Section */}
-        <View style={styles.statsContainer}>
-          <StatCard
-            label="Active Policies"
-            value={`${activePolicies.length}`}
-          />
-          <StatCard
-            label="Total Coverage"
-            value={`$${(totalCoverage / 1000).toFixed(0)}k`}
-          />
-        </View>
+        {isLoading && <LoadingSpinner />}
 
-        {/* Policies Section */}
-        <View style={styles.policiesSection}>
-          <View style={styles.policiesList}>
-            <FlatList
-              data={mockPolicies}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => (
-                <PolicyCard policy={item} onPress={handlePolicyPress} />
-              )}
-              scrollEnabled={false}
-            />
+        {error && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
           </View>
-        </View>
+        )}
+
+        {!isLoading && !error && (
+          <>
+            <View style={styles.statsContainer}>
+              <StatCard
+                label="Active Policies"
+                value={`${activePolicies.length}`}
+              />
+              <StatCard
+                label="Total Coverage"
+                value={`$${(totalCoverage / 1000).toFixed(0)}k`}
+              />
+            </View>
+
+            <View style={styles.policiesSection}>
+              <View style={styles.policiesList}>
+                <FlatList
+                  data={mockPolicies}
+                  keyExtractor={item => item.id}
+                  renderItem={({item}) => (
+                    <PolicyCard policy={item} onPress={handlePolicyPress} />
+                  )}
+                  scrollEnabled={false}
+                />
+              </View>
+            </View>
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
