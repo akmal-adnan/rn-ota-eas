@@ -21,9 +21,6 @@ const RootNavigator: React.FC = () => {
           color: COLORS.text,
         },
         headerShadowVisible: false,
-        cardStyle: {
-          backgroundColor: COLORS.background,
-        },
       }}>
       <Stack.Screen
         name="Home"
